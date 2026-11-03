@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro'
+import TourForm from '../components/TourForm.astro'
+import {getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const site = await getSite()
+---
+<Base title="Schedule a Tour" description="Schedule a tour of Bluewater Post-Acute in Dania Beach, FL. Meet our team and see our rooms, therapy gym and courtyard.">
+  <section class="page-hero"><div class="w"><h1>Schedule a tour</h1><p>See our rooms, therapy gym and courtyard, and meet the team. We'll call to confirm a time that works for you.</p></div></section>
+  <section class="sec" style="background:var(--sand)">
+    <div class="w" style="display:flex;flex-wrap:wrap;gap:56px">
+      <div style="flex:1 1 360px;min-width:0" class="stack">
+        <h2 style="font-size:28px">Prefer to talk now?</h2>
+        <a href={telHref(site.phone)} style="font-weight:600;font-size:24px;color:var(--ink);text-decoration:none">{site.phone}</a>
+        <p class="lead">{site.street}<br />{site.city}, {site.state} {site.zip}</p>
+      </div>
+      <div style="flex:1 1 440px;min-width:0"><TourForm /></div>
+    </div>
+  </section>
+</Base>

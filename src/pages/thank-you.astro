@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro'
+import {getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const site = await getSite()
+---
+<Base title="Thank you">
+  <meta name="robots" content="noindex" slot="head" />
+  <section class="sec"><div class="w center" style="min-height:40vh;justify-content:center">
+    <h1 class="h2">Thank you. We'll be in touch soon.</h1>
+    <p class="lead">Need us sooner? Call <a href={telHref(site.phone)}>{site.phone}</a>.</p>
+    <a class="btn btn-pri" href="/">Back to home</a>
+  </div></section>
+  <script is:inline>if (window.gtag) gtag('event', 'generate_lead', {page_referrer: document.referrer});</script>
+</Base>

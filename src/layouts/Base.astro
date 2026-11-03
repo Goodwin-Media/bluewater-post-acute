@@ -1,0 +1,125 @@
+---
+import '../styles/global.css'
+import Icon from '../components/Icon.astro'
+import {getSite} from '../lib/content'
+
+interface Props {
+  title?: string
+  description?: string
+  image?: string
+  schema?: Record<string, unknown>[]
+}
+const {title, description, image, schema = []} = Astro.props
+const s = await getSite()
+const fullTitle = title ? `${title} | ${s.name}` : `${s.name} | Skilled Nursing & Rehab in Dania Beach, FL`
+const desc =
+  description ||
+  `${s.name} is an ${s.beds}-bed skilled nursing and short-term rehabilitation facility in Dania Beach, Florida, with registered nurses 24/7 and in-house physical, occupational and speech therapy.`
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const ogImage = image ? new URL(image, Astro.site).href : new URL('/seed/hero.jpg', Astro.site).href
+const tel = `tel:${s.phone.replace(/[^\d+]/g, '').replace(/^(\d{10})$/, '+1$1')}`
+const business = {
+  '@context': 'https://schema.org',
+  '@type': ['NursingHome', 'MedicalBusiness'],
+  name: s.name,
+  alternateName: s.formerName,
+  url: Astro.site?.href,
+  telephone: s.phone,
+  image: ogImage,
+  logo: new URL('/logo.png', Astro.site).href,
+  address: {'@type': 'PostalAddress', streetAddress: s.street, addressLocality: s.city, addressRegion: s.state, postalCode: s.zip, addressCountry: 'US'},
+  geo: {'@type': 'GeoCoordinates', latitude: 26.0432496, longitude: -80.1499788},
+  medicalSpecialty: ['Physical therapy', 'Occupational therapy', 'Speech therapy'],
+  numberOfBeds: (s as any).beds,
+}
+const path = Astro.url.pathname
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={s.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1c3144" />
+    <slot name="head" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    {s.ga4Id && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${s.ga4Id}`}></script>
+        <script is:inline define:vars={{id: s.ga4Id}}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', id);
+          document.addEventListener('click', function (e) {
+            var a = e.target.closest && e.target.closest('a[href^="tel:"]');
+            if (a) gtag('event', 'click_to_call', {link_url: a.href});
+          });
+        </script>
+      </>
+    )}
+    <script type="application/ld+json" set:html={JSON.stringify(business)} />
+    {schema.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="util">
+      <div class="w">
+        <span><span class="dot"></span>Now accepting admissions<span class="hide-sm"> &nbsp;·&nbsp; Medicare &amp; Medicaid accepted</span></span>
+        <a href="/refer-a-patient/">Hospital or case manager? Refer a patient →</a>
+      </div>
+    </div>
+    <header class="hdr">
+      <div class="w" style="position:relative">
+        <a href="/"><img src="/logo.png" alt={s.name} width="214" height="46" style="height:46px;width:auto" /></a>
+        <nav class="nav" id="nav" aria-label="Main">
+          <a href="/about-us/">About</a>
+          <a href="/services/">Services</a>
+          <a href="/activities/">Life at Bluewater</a>
+          <a href="/refer-a-patient/">Refer a Patient</a>
+          <a href={s.careersUrl} rel="noopener">Careers</a>
+          <a href="/contact-us/">Contact</a>
+        </nav>
+        <div class="hdr-cta">
+          <div class="hdr-phone"><small>Admissions &amp; questions</small><a href={tel}>{s.phone}</a></div>
+          <a class="btn btn-pri hide-sm" href="/schedule-a-tour/" style="min-height:44px;padding:11px 18px;font-size:15px">Schedule a Tour</a>
+          <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav" onclick="var n=document.getElementById('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><Icon name="menu" /></button>
+        </div>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="ftr">
+      <div class="w" style="padding-top:56px;padding-bottom:36px;display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px">
+          <div style="max-width:360px;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:var(--serif);font-weight:600;font-size:22px;color:#fff">{s.name}</span>
+            <span style="line-height:1.6">An {s.beds}-bed skilled nursing and short-term rehabilitation facility in {s.city}, Florida.</span>
+          </div>
+          <div class="ftr-cols">
+            <div><b>Services</b><a href="/skilled-nursing/">Skilled Nursing</a><a href="/rehabilitation/">Rehabilitation</a><a href="/wound-care/">Wound Care</a><a href="/activities/">Activities</a><a href="/social-services/">Social Services</a></div>
+            <div><b>Bluewater</b><a href="/about-us/">About Us</a><a href="/refer-a-patient/">Refer a Patient</a><a href={s.careersUrl}>Careers</a><a href="/schedule-a-tour/">Schedule a Tour</a><a href="/send-a-greeting/">Send a Greeting</a><a href="/blog/">News &amp; Resources</a></div>
+            <div><b>Visit</b><span>{s.street}<br />{s.city}, {s.state} {s.zip}</span><a href={tel} style="color:#fff;font-weight:600">{s.phone}</a></div>
+          </div>
+        </div>
+        <div style="border-top:1px solid #34495d;padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px">
+          <span>© {new Date().getFullYear()} {s.name}. All rights reserved. In a medical emergency, call 911.</span>
+          <span style="display:flex;gap:16px;flex-wrap:wrap"><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-conditions/">Terms</a><a href="/web-accessibility/">Web Accessibility</a></span>
+        </div>
+      </div>
+    </footer>
+    <div class="mbar"><a class="btn btn-pri" href={tel}>Call now</a><a class="btn btn-out" href="/schedule-a-tour/">Book a tour</a></div>
+  </body>
+</html>

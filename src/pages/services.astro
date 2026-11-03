@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro'
+import ServiceGrid from '../components/ServiceGrid.astro'
+import ReferBand from '../components/ReferBand.astro'
+import {getServices, getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const [site, services] = await Promise.all([getSite(), getServices()])
+---
+<Base title="Services" description="Skilled nursing, short-term rehabilitation, wound care, IV therapy, dementia care and more at Bluewater Post-Acute in Dania Beach, FL.">
+  <section class="page-hero"><div class="w"><h1>What we offer</h1><p>Services tailored to each resident, from 24-hour skilled nursing to in-house physical, occupational and speech therapy that helps you get back to your highest level of independence.</p></div></section>
+  <section class="sec"><div class="w"><ServiceGrid services={services} /></div></section>
+  <ReferBand site={site} tel={telHref(site.phone)} />
+</Base>

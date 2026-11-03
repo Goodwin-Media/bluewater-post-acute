@@ -1,0 +1,21 @@
+# Old WordPress URLs (bluewaterpostacute.com) -> new pages. Unchanged URLs keep working as-is:
+# /about-us/ /services/ /skilled-nursing/ /rehabilitation/ /wound-care/ /activities/
+# /social-services/ /contact-us/ /schedule-a-tour/ /send-a-greeting/
+# /privacy-policy/ /terms-conditions/ /web-accessibility/
+/site-map                                 /                    301
+/site-map/                                /                    301
+/our-team                                 /about-us/#leadership 301
+/our-team/                                /about-us/#leadership 301
+/photo-gallery                            /about-us/#gallery   301
+/photo-gallery/                           /about-us/#gallery   301
+/send-a-greeting/get-well-soon-cards/     /send-a-greeting/    301
+/send-a-greeting/happy-birthday-cards/    /send-a-greeting/    301
+/send-a-greeting/holiday-cards/           /send-a-greeting/    301
+/send-a-greeting/thinking-of-you-cards/   /send-a-greeting/    301
+/send-a-greeting/*                        /send-a-greeting/    301
+/feed                                     /blog/               301
+/feed/                                    /blog/               301
+/wp-admin/*                               /                    301
+/wp-login.php                             /                    301
+/wp-content/*                             /                    301
+/sitemap.xml                              /sitemap-index.xml   301

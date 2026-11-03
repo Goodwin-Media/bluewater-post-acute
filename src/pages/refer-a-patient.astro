@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
+import TourForm from '../components/TourForm.astro'
+import {getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const site = await getSite()
+const tel = telHref(site.phone)
+---
+<Base title="Refer a Patient" description="Hospital discharge planners and case managers: refer a patient to Bluewater Post-Acute for skilled nursing, short-term rehab, wound care and IV therapy.">
+  <section class="page-hero"><div class="w"><span class="eye" style="color:#5fc2b5">For hospitals &amp; case managers</span><h1>Refer a patient</h1><p>Call admissions or send a referral request and our team will follow up to coordinate clinicals and the transfer.</p></div></section>
+  <section class="sec">
+    <div class="w" style="display:flex;flex-wrap:wrap;gap:56px">
+      <div style="flex:1 1 380px;min-width:0" class="stack">
+        <h2 style="font-size:28px">Admissions</h2>
+        <a href={tel} style="font-weight:600;font-size:24px;color:var(--ink);text-decoration:none">{site.phone}</a>
+        {site.fax && <p class="lead">Referral fax: <b>{site.fax}</b></p>}
+        <ul class="check-list">
+          {['Medicare and Medicaid accepted', 'Registered nurses on duty 24/7', 'In-house physical, occupational and speech therapy', 'Wound care, IV therapy, enteral feeding and dementia care', 'Onsite Medical Director and Director of Nursing'].map((t) => <li><Icon name="check" color="#1f7a74" />{t}</li>)}
+        </ul>
+      </div>
+      <div style="flex:1 1 440px;min-width:0"><TourForm referral title="Referral request" note="No patient health information here, please. We'll call you to get clinicals." /></div>
+    </div>
+  </section>
+</Base>

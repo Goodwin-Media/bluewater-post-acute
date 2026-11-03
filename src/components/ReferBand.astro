@@ -1,0 +1,17 @@
+---
+const {site, tel} = Astro.props
+---
+<section class="refer" id="refer">
+  <div class="w" style="padding-top:72px;padding-bottom:72px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:32px">
+    <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:14px">
+      <span class="eye" style="color:#5fc2b5">For hospitals &amp; case managers</span>
+      <h2 style="font-size:34px;line-height:1.2">Referring a patient? We make admissions easy.</h2>
+      <p style="font-size:17px;line-height:1.6;color:#d5e0e7">Send clinicals and our admissions team will follow up to coordinate the transfer. Medicare and Medicaid accepted.</p>
+    </div>
+    <div class="refer-box" style="flex:0 1 380px;min-width:0">
+      <div><span style="color:#becdd5">Admissions</span><a href={tel} style="color:#fff;font-weight:600;text-decoration:none">{site.phone}</a></div>
+      {site.fax && <div><span style="color:#becdd5">Referral fax</span><b>{site.fax}</b></div>}
+      <a class="btn btn-white" href="/refer-a-patient/">Send a referral</a>
+    </div>
+  </div>
+</section>

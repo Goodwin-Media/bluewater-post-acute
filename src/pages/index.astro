@@ -1,0 +1,208 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
+import Faq from '../components/Faq.astro'
+import ServiceGrid from '../components/ServiceGrid.astro'
+import ReferBand from '../components/ReferBand.astro'
+import TourForm from '../components/TourForm.astro'
+import {getHome, getLeaders, getReviews, getServices, getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+
+const [site, h, services, leaders, reviews] = await Promise.all([getSite(), getHome(), getServices(), getLeaders(), getReviews()])
+const tel = telHref(site.phone)
+const homeServices = services.filter((s) => s.showOnHome)
+---
+<Base>
+  <section class="hero">
+    <div class="hero-media" id="heroMedia" data-videos={JSON.stringify(h.heroVideos)}>
+      <img src={h.heroPoster} alt="" fetchpriority="high" />
+    </div>
+    <div class="hero-shade"></div>
+    <div class="w">
+      <div class="hero-copy">
+        <h1>{h.heroTitle}</h1>
+        <p>{h.heroText}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a class="btn btn-pri" href={tel}><Icon name="phone" size={18} />Call {site.phone}</a>
+          <a class="btn btn-ghost" href="/schedule-a-tour/">Schedule a Tour</a>
+        </div>
+        <ul class="proof">{h.heroProof.map((p: string) => <li><Icon name="check" size={18} color="#5fc2b5" />{p}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff;border-bottom:1px solid var(--line)">
+    <div class="w" style="padding-top:56px;padding-bottom:56px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center">
+      <h2 style="font-size:32px">Insurance we work with</h2>
+      <p class="muted">Not sure about your coverage? Call us and we'll walk you through it.</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;width:100%;max-width:760px">
+        {h.payers.map((p: string) => (
+          <div class="card payer"><span class="payer-icon"><Icon name="shield" size={26} /></span><span><span style="display:block;font-size:22px;font-weight:600">{p}</span><span style="font-size:14px;font-weight:500;color:var(--sea-deep)">Accepted</span></span></div>
+        ))}
+      </div>
+      {h.plans.length > 0 ? (
+        <>
+          <p class="muted" style="font-size:15px;margin-top:8px">We also work with these plans:</p>
+          <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;width:100%">
+            {h.plans.map((p: any) => <div class="card" style="padding:18px;display:flex;align-items:center;justify-content:center;min-height:80px">{p.logo ? <img src={p.logo} alt={p.name} style="max-height:44px" loading="lazy" /> : <span>{p.name}</span>}</div>)}
+          </div>
+        </>
+      ) : (
+        <p class="muted" style="font-size:15px;margin-top:4px">We also work with many Medicare Advantage and managed care plans.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="w split">
+      <div class="stack">
+        <span class="eye">Post-hospital recovery</span>
+        <h2 class="h2">{h.introTitle}</h2>
+        <p class="lead">{h.introText}</p>
+        <ul class="check-list">{h.introPoints.map((t: string) => <li><Icon name="check" color="#1f7a74" />{t}</li>)}</ul>
+        <div><a class="btn btn-pri" href={tel}>Call {site.phone}</a></div>
+      </div>
+      <img class="photo" src={h.introImage} alt="Occupational therapist helping a resident practice daily tasks in the therapy kitchen" style="height:440px" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="sec" style="background:#fff;border-top:1px solid var(--line)" id="leadership">
+    <div class="w split" style="align-items:flex-start">
+      <div class="stack" style="gap:18px">
+        <span class="eye">A new chapter</span>
+        <h2 style="font-size:36px;line-height:1.18">{h.chapterTitle}</h2>
+        {h.chapterText.map((t: string) => <p class="lead">{t}</p>)}
+        <div><a class="btn btn-out" href="/schedule-a-tour/">Meet the team on a tour</a></div>
+        <p style="font-size:13px;color:#5f6f7e">Formerly {site.formerName}.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        {leaders.map((l: any) => (
+          <div class="card leader">
+            {l.photoUrl ? <img class="avatar" src={l.photoUrl} alt={l.name} loading="lazy" /> : <div class="avatar" aria-hidden="true"></div>}
+            <div><div style="font-family:var(--serif);font-weight:600;font-size:19px">{l.name}</div><div style="font-size:14px;font-weight:600;color:var(--sea-deep)">{l.role}</div><div class="muted" style="font-size:14px">{l.bio}</div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="background:var(--sand)">
+    <div class="w" style="display:flex;flex-direction:column;gap:40px">
+      <div class="center"><h2 class="h2">Getting started is simple</h2><p class="lead">One call starts everything. Here's what happens next.</p></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+        {h.steps.map((s: any, i: number) => (
+          <div class="card" style="padding:28px;display:flex;flex-direction:column;gap:12px"><span class="step-n">{i + 1}</span><h3 style="font-size:20px">{s.title}</h3><p class="muted" style="font-size:15px;line-height:1.55">{s.body}</p></div>
+        ))}
+      </div>
+      <div style="text-align:center"><a class="btn btn-pri" href={tel}>Start with a call: {site.phone}</a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="services">
+    <div class="w" style="display:flex;flex-direction:column;gap:40px">
+      <div class="center"><h2 class="h2">Comprehensive care under one roof</h2><p class="lead">From the day you leave the hospital to the day you head home.</p></div>
+      <ServiceGrid services={homeServices} />
+    </div>
+  </section>
+
+  <ReferBand site={site} tel={tel} />
+
+  <section class="sec" style="background:#fff" id="gallery">
+    <div class="w" style="display:flex;flex-direction:column;gap:32px">
+      <div class="center"><h2 class="h2">A look inside Bluewater</h2><p class="lead">From our sunny outdoor courtyard to comfortable private rooms, every space is designed for a smooth recovery.</p></div>
+      <div class="grid gal" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">
+        {h.gallery.map((g: any) => <figure><img src={g.image} alt={g.caption} loading="lazy" /><figcaption>{g.caption}</figcaption></figure>)}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px"><a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a><a class="btn btn-out" href={tel}>Call {site.phone}</a></div>
+    </div>
+  </section>
+
+  {reviews.length > 0 && (
+    <section class="sec" style="background:var(--foam)">
+      <div class="w" style="display:flex;flex-direction:column;gap:32px">
+        <div class="center"><h2 class="h2">What families say</h2><p class="lead">Reviews from Bluewater residents and their families.</p></div>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+          {reviews.map((r: any) => (
+            <figure class="card" style="margin:0;padding:28px;display:flex;flex-direction:column;gap:14px">
+              <div class="stars" aria-label={`${r.rating || 5} out of 5 stars`}>{'★'.repeat(r.rating || 5)}</div>
+              <blockquote style="margin:0;line-height:1.6;color:#44576a">{r.quote}</blockquote>
+              <figcaption style="font-size:14px;font-weight:600">{r.name}{r.source ? `, ${r.source}` : ''}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="sec" id="life">
+    <div class="w split">
+      <img class="photo" src={h.lifeImage} alt="Residents planting herbs in the courtyard garden with a visiting granddaughter" style="height:500px" loading="lazy" />
+      <div class="stack">
+        <span class="eye">Life at Bluewater</span>
+        <h2 class="h2">Staying active, social and connected</h2>
+        <p class="lead">Regular events bring families together and keep residents physically and mentally engaged.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">{h.activities.map((a: string) => <span class="chip">{a}</span>)}</div>
+        <div><a href="/activities/" style="font-weight:600">See activities →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="w grid" style="padding-top:64px;padding-bottom:64px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center">
+      {h.stats.map((s: any) => <div><div class="num">{s.value}</div><div style="color:#d5e0e7">{s.label}</div></div>)}
+    </div>
+  </section>
+
+  <Faq faqs={h.faqs} phone={site.phone} />
+
+  <section class="sec" style="background:var(--sand)" id="tour">
+    <div class="w" style="display:flex;flex-wrap:wrap;gap:56px">
+      <div style="flex:1 1 380px;min-width:0" class="stack">
+        <h2 class="h2">Come see Bluewater for yourself</h2>
+        <p class="lead">Schedule a tour or ask us anything about care for you or a loved one. Our doors are always open to you and your family.</p>
+        <div><div class="muted" style="font-size:13px">Phone</div><a href={tel} style="font-weight:600;font-size:20px;color:var(--ink);text-decoration:none">{site.phone}</a></div>
+        <div><div class="muted" style="font-size:13px">Address</div><a href={site.mapsUrl} style="font-weight:600;color:var(--ink);text-decoration:none">{site.street}<br />{site.city}, {site.state} {site.zip}</a></div>
+        <iframe class="map" title="Map to Bluewater Post-Acute" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(`${site.street}, ${site.city}, ${site.state} ${site.zip}`)}&output=embed`}></iframe>
+      </div>
+      <div style="flex:1 1 440px;min-width:0"><TourForm /></div>
+    </div>
+  </section>
+
+  <script>
+    const box = document.getElementById('heroMedia')
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const srcs: string[] = JSON.parse(box?.dataset.videos || '[]')
+    if (box && srcs.length && !reduce && window.innerWidth > 720) {
+      const vids = srcs.map((src, i) => {
+        const v = document.createElement('video')
+        v.src = src
+        v.muted = true
+        v.playsInline = true
+        v.preload = i === 0 ? 'auto' : 'metadata'
+        v.setAttribute('aria-hidden', 'true')
+        v.style.opacity = '0'
+        box.appendChild(v)
+        return v
+      })
+      let cur = 0
+      const start = (i: number) => {
+        const v = vids[i]
+        v.currentTime = 0
+        v.play().then(() => { v.style.opacity = '1' }).catch(() => {})
+      }
+      vids.forEach((v, i) =>
+        v.addEventListener('timeupdate', () => {
+          if (i !== cur || !v.duration || v.currentTime < v.duration - 1.4 || (v as any)._x) return
+          ;(v as any)._x = 1
+          const n = (cur + 1) % vids.length
+          ;(vids[n] as any)._x = 0
+          start(n)
+          v.style.opacity = '0'
+          cur = n
+        }),
+      )
+      vids[0].addEventListener('error', () => vids.forEach((v) => v.remove()))
+      start(0)
+    }
+  </script>
+</Base>

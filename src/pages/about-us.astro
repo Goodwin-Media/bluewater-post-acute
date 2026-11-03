@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro'
+import {getHome, getLeaders, getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const [site, h, leaders] = await Promise.all([getSite(), getHome(), getLeaders()])
+---
+<Base title="About Us" description={`${site.name} is an ${site.beds}-bed skilled nursing and rehabilitation facility in Dania Beach, Florida, under new ownership.`}>
+  <section class="page-hero"><div class="w"><h1>About Bluewater</h1><p>An {site.beds}-bed skilled nursing and short-term rehabilitation facility in Dania Beach, Florida, where a dedicated team delivers consistent, personalized care.</p></div></section>
+  <section class="sec" id="leadership">
+    <div class="w split" style="align-items:flex-start">
+      <div class="stack">
+        <span class="eye">A new chapter</span>
+        <h2 class="h2">{h.chapterTitle}</h2>
+        {h.chapterText.map((t: string) => <p class="lead">{t}</p>)}
+        <p class="lead">Whether you are relaxing in our sunny outdoor courtyard or resting in a comfortable private room, you will find a warm, supportive space designed for a smooth recovery.</p>
+        <p style="font-size:13px;color:#5f6f7e">Formerly {site.formerName}.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h3 style="font-size:24px">Leadership</h3>
+        {leaders.map((l: any) => (
+          <div class="card leader">
+            {l.photoUrl ? <img class="avatar" src={l.photoUrl} alt={l.name} /> : <div class="avatar" aria-hidden="true"></div>}
+            <div><div style="font-family:var(--serif);font-weight:600;font-size:19px">{l.name}</div><div style="font-size:14px;font-weight:600;color:var(--sea-deep)">{l.role}</div><div class="muted" style="font-size:14px">{l.bio}</div></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="sec" style="background:#fff" id="gallery">
+    <div class="w" style="display:flex;flex-direction:column;gap:32px">
+      <div class="center"><h2 class="h2">A look inside</h2></div>
+      <div class="grid gal" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">
+        {h.gallery.map((g: any) => <figure><img src={g.image} alt={g.caption} loading="lazy" /><figcaption>{g.caption}</figcaption></figure>)}
+      </div>
+      <div style="text-align:center"><a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a></div>
+    </div>
+  </section>
+</Base>

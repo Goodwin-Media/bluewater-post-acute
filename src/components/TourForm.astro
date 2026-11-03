@@ -1,0 +1,28 @@
+---
+const {title = 'Schedule a tour', note = "Takes under a minute. We'll call to confirm a time.", referral = false} = Astro.props
+const name = referral ? 'referral' : 'tour'
+---
+<form class="card form" name={name} method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website">
+  <input type="hidden" name="form-name" value={name} />
+  <p class="hp"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off" /></label></p>
+  <h3 style="font-size:24px">{title}</h3>
+  <p class="muted" style="font-size:15px">{note}</p>
+  <label>Your name<input name="name" autocomplete="name" required /></label>
+  <label>Phone<input name="phone" type="tel" autocomplete="tel" required /></label>
+  {referral ? (
+    <>
+      <label>Hospital or organization<input name="organization" autocomplete="organization" /></label>
+      <label>Email<input name="email" type="email" autocomplete="email" /></label>
+      <label>Anticipated admission date (optional)<input name="admit_date" type="date" /></label>
+    </>
+  ) : (
+    <>
+      <label>Care is for
+        <select name="care_for"><option>A loved one</option><option>Myself</option><option>A patient I'm referring</option></select>
+      </label>
+      <label>Preferred day (optional)<input name="preferred_day" type="date" /></label>
+    </>
+  )}
+  <button type="submit" class="btn btn-pri">{referral ? 'Send referral request' : 'Request a tour'}</button>
+  <p class="muted" style="font-size:13px">Please don't include medical details in this form. {referral ? 'Our admissions team will call you for clinicals.' : ''}</p>
+</form>

@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
+import TourForm from '../components/TourForm.astro'
+import {getPage, getServices, getSite} from '../lib/content'
+import {legalPages} from '../data/defaults'
+import {portable, lines} from '../lib/pt'
+import {telHref} from '../lib/tel'
+
+export async function getStaticPaths() {
+  const services = (await getServices()).filter((s) => s.hasPage)
+  return [
+    ...services.map((s) => ({params: {slug: s.slug}, props: {kind: 'service', service: s}})),
+    ...legalPages.map((p) => ({params: {slug: p.slug}, props: {kind: 'page'}})),
+  ]
+}
+const {kind, service} = Astro.props as any
+const site = await getSite()
+const tel = telHref(site.phone)
+const page = kind === 'page' ? await getPage(Astro.params.slug!) : null
+const crumbs = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {'@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href},
+    {'@type': 'ListItem', position: 2, name: service?.title || page?.title, item: new URL(Astro.url.pathname, Astro.site).href},
+  ],
+}
+---
+{kind === 'service' ? (
+  <Base title={`${service.title} in Dania Beach, FL`} description={service.summary} image={service.imageUrl} schema={[crumbs]}>
+    <section class="page-hero"><div class="w"><span class="eye" style="color:#5fc2b5">Services</span><h1>{service.title}</h1><p>{service.summary}</p></div></section>
+    <section class="sec">
+      <div class="w split" style="align-items:flex-start">
+        <div class="stack">
+          <p class="lead" style="font-size:19px">{service.intro}</p>
+          {service.sections.map((sec: any) => (
+            <div class="stack" style="gap:12px;margin-top:12px">
+              <h2 style="font-size:28px">{sec.heading}</h2>
+              {sec.text && <p class="lead">{sec.text}</p>}
+              {sec.bullets?.length > 0 && <ul class="bullets">{sec.bullets.map((b: string) => <li><Icon name="check" size={18} color="#1f7a74" />{b}</li>)}</ul>}
+            </div>
+          ))}
+        </div>
+        <div class="stack" style="position:sticky;top:110px">
+          <img class="photo" src={service.imageUrl} alt="" style="height:320px" />
+          <div class="card" style="padding:24px" >
+            <h3 style="font-size:22px;margin-bottom:8px">Questions about {service.title.toLowerCase()}?</h3>
+            <p class="muted" style="margin-bottom:16px">Talk with our admissions team. Medicare and Medicaid accepted.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-pri" href={tel}>Call {site.phone}</a><a class="btn btn-out" href="/schedule-a-tour/">Schedule a tour</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </Base>
+) : (
+  <Base title={page!.title}>
+    <section class="page-hero"><div class="w"><h1>{page!.title}</h1></div></section>
+    <section class="sec"><div class="w"><div class="prose" set:html={page!.blocks ? portable(page!.blocks) : lines(page!.lines!)} /></div></section>
+  </Base>
+)}

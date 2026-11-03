@@ -1,0 +1,15 @@
+---
+const {faqs, title = 'Questions families ask us', phone} = Astro.props
+const schema = {'@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f: any) => ({'@type': 'Question', name: f.q, acceptedAnswer: {'@type': 'Answer', text: f.a}}))}
+---
+<section class="sec" style="background:#fff">
+  <div class="w" style="max-width:860px;display:flex;flex-direction:column;gap:32px">
+    <div class="center"><h2 class="h2">{title}</h2><p class="lead">Don't see yours? Call {phone} and we'll answer it.</p></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      {faqs.map((f: any, i: number) => (
+        <details class="faq" open={i === 0}><summary>{f.q}<span aria-hidden="true">+</span></summary><p>{f.a}</p></details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</section>

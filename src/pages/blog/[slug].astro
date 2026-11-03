@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro'
+import Faq from '../../components/Faq.astro'
+import {getPosts, getSite, img} from '../../lib/content'
+import {portable} from '../../lib/pt'
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map((p: any) => ({params: {slug: p.slug}, props: {post: p}}))
+}
+const {post} = Astro.props as any
+const site = await getSite()
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  datePublished: post.publishedAt,
+  author: {'@type': 'Organization', name: post.author || site.name},
+  publisher: {'@type': 'Organization', name: site.name},
+  image: post.mainImage ? img(post.mainImage, 1200) : undefined,
+}
+---
+<Base title={post.seoTitle || post.title} description={post.seoDescription || post.excerpt} image={post.mainImage ? img(post.mainImage, 1200) : undefined} schema={[article]}>
+  <section class="page-hero"><div class="w"><h1>{post.title}</h1>{post.publishedAt && <p>{new Date(post.publishedAt).toLocaleDateString('en-US', {dateStyle: 'long'})}</p>}</div></section>
+  <section class="sec"><div class="w">
+    {post.mainImage && <img class="photo" src={img(post.mainImage, 1400)} alt="" style="max-width:760px;height:auto;margin-bottom:32px" />}
+    <article class="prose" set:html={portable(post.body)} />
+  </div></section>
+  {post.faqs?.length > 0 && <Faq faqs={post.faqs} title="Frequently asked questions" phone={site.phone} />}
+</Base>

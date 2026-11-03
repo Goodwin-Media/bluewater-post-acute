@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro'
+import {getSite} from '../lib/content'
+import {telHref} from '../lib/tel'
+const site = await getSite()
+---
+<Base title="Contact Us" description="Contact Bluewater Post-Acute in Dania Beach, FL. Call (954) 927-0508 or send us a message.">
+  <section class="page-hero"><div class="w"><h1>Contact us</h1><p>Our doors, and our hearts, are always open to you and your family. Call us or send a message.</p></div></section>
+  <section class="sec" style="background:var(--sand)">
+    <div class="w" style="display:flex;flex-wrap:wrap;gap:56px">
+      <div style="flex:1 1 380px;min-width:0" class="stack">
+        <div><div class="muted" style="font-size:13px">Phone</div><a href={telHref(site.phone)} style="font-weight:600;font-size:22px;color:var(--ink);text-decoration:none">{site.phone}</a></div>
+        <div><div class="muted" style="font-size:13px">Address</div><a href={site.mapsUrl} style="font-weight:600;color:var(--ink);text-decoration:none">{site.street}<br />{site.city}, {site.state} {site.zip}</a></div>
+        <iframe class="map" title="Map to Bluewater Post-Acute" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(`${site.street}, ${site.city}, ${site.state} ${site.zip}`)}&output=embed`}></iframe>
+      </div>
+      <form class="card form" style="flex:1 1 440px;min-width:0" name="contact" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website">
+        <input type="hidden" name="form-name" value="contact" />
+        <p class="hp"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off" /></label></p>
+        <h3 style="font-size:24px">Send a message</h3>
+        <label>Your name<input name="name" autocomplete="name" required /></label>
+        <label>Phone<input name="phone" type="tel" autocomplete="tel" /></label>
+        <label>Email<input name="email" type="email" autocomplete="email" /></label>
+        <label>How can we help?<textarea name="message" rows="5" required></textarea></label>
+        <button type="submit" class="btn btn-pri">Send message</button>
+        <p class="muted" style="font-size:13px">Please don't include medical details in this form.</p>
+      </form>
+    </div>
+  </section>
+</Base>

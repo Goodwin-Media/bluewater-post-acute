@@ -1,0 +1,18 @@
+---
+const {services} = Astro.props
+---
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+  {services.map((s: any) => {
+    const inner = (
+      <>
+        <img src={s.imageUrl} alt="" loading="lazy" width="600" height="400" />
+        <div class="svc-body">
+          <h3 style="font-size:21px">{s.title}</h3>
+          <p class="muted" style="font-size:15px;line-height:1.55">{s.summary}</p>
+          {s.hasPage && <span style="font-weight:600;color:var(--sea-deep);padding-top:4px">Learn more →</span>}
+        </div>
+      </>
+    )
+    return s.hasPage ? <a class="card svc" href={`/${s.slug}/`}>{inner}</a> : <div class="card svc">{inner}</div>
+  })}
+</div>

@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro'
+import {getPosts, img} from '../../lib/content'
+const posts = await getPosts()
+---
+<Base title="News & Resources" description="Guides and news for families and patients from Bluewater Post-Acute in Dania Beach, FL.">
+  <section class="page-hero"><div class="w"><h1>News &amp; resources</h1><p>Guides for families planning post-hospital care, and news from Bluewater.</p></div></section>
+  <section class="sec"><div class="w">
+    {posts.length === 0 ? <p class="lead">New articles are coming soon.</p> : (
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+        {posts.map((p: any) => (
+          <a class="card svc" href={`/blog/${p.slug}/`}>
+            {p.mainImage && <img src={img(p.mainImage, 800)} alt="" loading="lazy" />}
+            <div class="svc-body"><h2 style="font-size:21px">{p.title}</h2>{p.excerpt && <p class="muted" style="font-size:15px">{p.excerpt}</p>}</div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div></section>
+</Base>

@@ -1,0 +1,24 @@
+{
+  "name": "bluewater-post-acute",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/react": "^7.1.2",
+    "@astrojs/sitemap": "^3.7.4",
+    "@portabletext/to-html": "^6.0.0",
+    "@sanity/astro": "^3.6.0",
+    "@sanity/client": "^8.14.1",
+    "@sanity/image-url": "^2.1.1",
+    "astro": "^7.4.5",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-is": "^19.3.1",
+    "sanity": "^6.21.0",
+    "styled-components": "^6.6.0"
+  }
+}

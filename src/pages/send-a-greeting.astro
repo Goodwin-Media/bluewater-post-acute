@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro'
+import {greetingCards} from '../data/defaults'
+---
+<Base title="Send a Greeting" description="Send a card to a resident at Bluewater Post-Acute. We'll print it and hand-deliver it.">
+  <section class="page-hero"><div class="w"><h1>Send a greeting</h1><p>Brighten a resident's day. Write a message and our team will print it as a card and hand-deliver it.</p></div></section>
+  <section class="sec" style="background:var(--sand)">
+    <div class="w" style="max-width:760px">
+      <form class="card form" name="greeting" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website">
+        <input type="hidden" name="form-name" value="greeting" />
+        <p class="hp"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off" /></label></p>
+        <label>Card
+          <select name="card">{greetingCards.map((c) => <option>{c}</option>)}</select>
+        </label>
+        <label>Resident's name<input name="resident" required /></label>
+        <label>Your message<textarea name="message" rows="6" required></textarea></label>
+        <label>From<input name="from_name" autocomplete="name" required /></label>
+        <label>Your email (so we can confirm delivery)<input name="email" type="email" autocomplete="email" /></label>
+        <button type="submit" class="btn btn-pri">Send greeting</button>
+      </form>
+    </div>
+  </section>
+</Base>
