@@ -1,7 +1,6 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {schemaTypes} from './sanity/schemaTypes'
-import {SeedTool} from './sanity/tools/SeedTool'
 
 const singletons = new Set(['siteSettings', 'homePage'])
 
@@ -27,7 +26,6 @@ export default defineConfig({
           ]),
     }),
   ],
-  tools: (prev) => [...prev, {name: 'starter', title: 'Starter content', component: SeedTool}],
   schema: {
     types: schemaTypes,
     templates: (t) => t.filter(({schemaType}) => !singletons.has(schemaType)),
