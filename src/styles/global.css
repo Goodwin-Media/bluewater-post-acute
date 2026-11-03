@@ -83,7 +83,7 @@ a:hover { color: #155a56; }
 .page-hero p { color: #d5e0e7; font-size: 18px; max-width: 720px; line-height: 1.6; }
 
 /* Sections */
-.payer { padding: 22px 24px; display: flex; align-items: center; gap: 16px; text-align: left; }
+.payer { padding: 28px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
 .payer-icon { width: 52px; height: 52px; border-radius: 50%; background: var(--sea-tint); color: var(--sea-deep); display: flex; align-items: center; justify-content: center; flex: none; }
 .check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .check-list li { display: flex; gap: 10px; align-items: flex-start; }
