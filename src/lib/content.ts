@@ -4,7 +4,8 @@ import {stegaClean} from '@sanity/client/stega'
 import * as d from '../data/defaults'
 
 export const previewMode = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
-const token = import.meta.env.SANITY_API_READ_TOKEN
+// Read at request time (not import.meta.env, which Astro inlines into the bundle at build time)
+const token = typeof process !== 'undefined' ? process.env.SANITY_API_READ_TOKEN : undefined
 
 const builder = imageUrlBuilder(sanityClient)
 
