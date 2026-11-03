@@ -1,6 +1,10 @@
 import {sanityClient} from 'sanity:client'
 import imageUrlBuilder from '@sanity/image-url'
+import {stegaClean} from '@sanity/client/stega'
 import * as d from '../data/defaults'
+
+export const previewMode = import.meta.env.PUBLIC_SANITY_VISUAL_EDITING_ENABLED === 'true'
+const token = import.meta.env.SANITY_API_READ_TOKEN
 
 const builder = imageUrlBuilder(sanityClient)
 
@@ -14,6 +18,16 @@ export function img(src: any, width = 1600): string {
 
 async function q<T>(query: string, params: Record<string, unknown> = {}): Promise<T | null> {
   try {
+    if (previewMode) {
+      if (!token) throw new Error('SANITY_API_READ_TOKEN is required for preview')
+      return await sanityClient.fetch<T>(query, params, {
+        perspective: 'drafts',
+        stega: true,
+        resultSourceMap: 'withKeyArraySelector',
+        token,
+        useCdn: false,
+      } as any)
+    }
     return await sanityClient.fetch<T>(query, params)
   } catch (e) {
     console.warn('[sanity] falling back to starter content:', (e as Error).message)
@@ -26,8 +40,8 @@ const pick = <T,>(v: T | undefined | null, fallback: T): T =>
 
 let siteCache: typeof d.site | null = null
 export async function getSite() {
-  if (siteCache) return siteCache
-  const s = await q<any>(`*[_id=="siteSettings"][0]`)
+  if (siteCache && !previewMode) return siteCache
+  const s = stegaClean(await q<any>(`*[_id=="siteSettings"][0]`))
   const out = {...d.site}
   if (s) for (const k of Object.keys(out) as (keyof typeof out)[]) (out as any)[k] = pick(s[k], out[k])
   siteCache = out
@@ -41,7 +55,7 @@ export async function getHome() {
     heroTitle: pick(h?.heroTitle, x.heroTitle),
     heroText: pick(h?.heroText, x.heroText),
     heroProof: pick(h?.heroProof, x.heroProof),
-    heroVideos: pick<string[]>(h?.videoUrls?.filter(Boolean), x.heroVideos),
+    heroVideos: pick<string[]>(stegaClean(h?.videoUrls)?.filter(Boolean), x.heroVideos),
     heroPoster: img(pick(h?.heroPoster, x.heroPoster), 1920),
     payers: pick(h?.payers, x.payers),
     plans: (h?.plans || []).map((p: any) => ({name: p.name, logo: img(p.logo, 300)})),
@@ -64,7 +78,7 @@ export type ServiceView = d.Service & {imageUrl: string}
 export async function getServices(): Promise<ServiceView[]> {
   const s = await q<any[]>(`*[_type=="service"]|order(order asc){..., "slug": slug.current}`)
   const list = s && s.length ? s : d.services
-  return list.map((v: any) => ({...v, sections: v.sections || [], imageUrl: img(v.image, 1200)}))
+  return list.map((v: any) => ({...v, slug: stegaClean(v.slug), hasPage: stegaClean(v.hasPage), showOnHome: stegaClean(v.showOnHome), sections: v.sections || [], imageUrl: img(v.image, 1200)}))
 }
 
 export async function getLeaders() {
@@ -85,5 +99,6 @@ export async function getPage(slug: string) {
 }
 
 export async function getPosts() {
-  return (await q<any[]>(`*[_type=="post" && defined(slug.current)]|order(publishedAt desc){..., "slug": slug.current}`)) || []
+  const posts = (await q<any[]>(`*[_type=="post" && defined(slug.current)]|order(publishedAt desc){..., "slug": slug.current}`)) || []
+  return posts.map((p: any) => ({...p, slug: stegaClean(p.slug)}))
 }

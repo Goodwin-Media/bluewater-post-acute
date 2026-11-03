@@ -7,7 +7,11 @@ export async function getStaticPaths() {
   const posts = await getPosts()
   return posts.map((p: any) => ({params: {slug: p.slug}, props: {post: p}}))
 }
-const {post} = Astro.props as any
+let {post} = Astro.props as any
+if (!post) {
+  post = (await getPosts()).find((p: any) => p.slug === Astro.params.slug)
+  if (!post) return Astro.rewrite('/404/')
+}
 const site = await getSite()
 const article = {
   '@context': 'https://schema.org',

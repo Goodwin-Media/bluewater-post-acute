@@ -14,7 +14,14 @@ export async function getStaticPaths() {
     ...legalPages.map((p) => ({params: {slug: p.slug}, props: {kind: 'page'}})),
   ]
 }
-const {kind, service} = Astro.props as any
+let {kind, service} = Astro.props as any
+if (!kind) {
+  // Rendered on demand (preview deploy): resolve the slug at request time.
+  const slug = Astro.params.slug
+  service = (await getServices()).find((s) => s.hasPage && s.slug === slug)
+  kind = service ? 'service' : legalPages.some((p) => p.slug === slug) ? 'page' : null
+  if (!kind) return Astro.rewrite('/404/')
+}
 const site = await getSite()
 const tel = telHref(site.phone)
 const page = kind === 'page' ? await getPage(Astro.params.slug!) : null

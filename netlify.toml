@@ -20,3 +20,9 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Visual-editing preview: branch deploy rendered on demand with drafts.
+# Its SANITY_API_READ_TOKEN is set in the Netlify UI (never in this file).
+[context.visual-preview.environment]
+  PUBLIC_SANITY_VISUAL_EDITING_ENABLED = "true"
+
