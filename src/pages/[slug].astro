@@ -1,4 +1,5 @@
 ---
+import {SHOW_TOURS} from '../lib/flags'
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 import TourForm from '../components/TourForm.astro'
@@ -54,7 +55,7 @@ const crumbs = {
           <div class="card" style="padding:24px" >
             <h3 style="font-size:22px;margin-bottom:8px">Questions about {service.title.toLowerCase()}?</h3>
             <p class="muted" style="margin-bottom:16px">Talk with our admissions team. Medicare and Medicaid accepted.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-pri" href={tel}>Call {site.phone}</a><a class="btn btn-out" href="/schedule-a-tour/">Schedule a tour</a></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-pri" href={tel}>Call {site.phone}</a>{SHOW_TOURS && <a class="btn btn-out" href="/schedule-a-tour/">Schedule a tour</a>}</div>
           </div>
         </div>
       </div>

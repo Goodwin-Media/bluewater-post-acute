@@ -1,4 +1,5 @@
 ---
+import {SHOW_TOURS} from '../lib/flags'
 import Base from '../layouts/Base.astro'
 import {getHome, getLeaders, getSite} from '../lib/content'
 import {telHref} from '../lib/tel'
@@ -32,7 +33,7 @@ const [site, h, leaders] = await Promise.all([getSite(), getHome(), getLeaders()
       <div class="grid gal" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">
         {h.gallery.map((g: any) => <figure><img src={g.image} alt={g.caption} loading="lazy" /><figcaption>{g.caption}</figcaption></figure>)}
       </div>
-      <div style="text-align:center"><a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a></div>
+      {SHOW_TOURS && <div style="text-align:center"><a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a></div>}
     </div>
   </section>
 </Base>

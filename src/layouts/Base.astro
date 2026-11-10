@@ -1,4 +1,5 @@
 ---
+import {SHOW_TOURS} from '../lib/flags'
 import '../styles/global.css'
 import Icon from '../components/Icon.astro'
 import {getSite, previewMode} from '../lib/content'
@@ -98,7 +99,7 @@ const path = Astro.url.pathname
         </nav>
         <div class="hdr-cta">
           <div class="hdr-phone"><small>Admissions &amp; questions</small><a href={tel}>{s.phone}</a></div>
-          <a class="btn btn-pri hide-sm" href="/schedule-a-tour/" style="min-height:44px;padding:11px 18px;font-size:15px">Schedule a Tour</a>
+          <a class="btn btn-pri hide-sm" href={SHOW_TOURS ? "/schedule-a-tour/" : "/contact-us/"} style="min-height:44px;padding:11px 18px;font-size:15px">{SHOW_TOURS ? "Schedule a Tour" : "Contact Us"}</a>
           <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav" onclick="var n=document.getElementById('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)"><Icon name="menu" /></button>
         </div>
       </div>
@@ -113,7 +114,7 @@ const path = Astro.url.pathname
           </div>
           <div class="ftr-cols">
             <div><b>Services</b><a href="/skilled-nursing/">Skilled Nursing</a><a href="/rehabilitation/">Rehabilitation</a><a href="/wound-care/">Wound Care</a><a href="/activities/">Activities</a><a href="/social-services/">Social Services</a></div>
-            <div><b>Bluewater</b><a href="/about-us/">About Us</a><a href="/refer-a-patient/">Refer a Patient</a><a href={s.careersUrl}>Careers</a><a href="/schedule-a-tour/">Schedule a Tour</a><a href="/send-a-greeting/">Send a Greeting</a><a href="/blog/">News &amp; Resources</a></div>
+            <div><b>Bluewater</b><a href="/about-us/">About Us</a><a href="/refer-a-patient/">Refer a Patient</a><a href={s.careersUrl}>Careers</a>{SHOW_TOURS && <a href="/schedule-a-tour/">Schedule a Tour</a>}<a href="/send-a-greeting/">Send a Greeting</a><a href="/blog/">News &amp; Resources</a></div>
             <div><b>Visit</b><span>{s.street}<br />{s.city}, {s.state} {s.zip}</span><a href={tel} style="color:#fff;font-weight:600">{s.phone}</a></div>
           </div>
         </div>
@@ -124,6 +125,6 @@ const path = Astro.url.pathname
       </div>
     </footer>
     <VisualEditing enabled={previewMode} zIndex={1000} />
-    <div class="mbar"><a class="btn btn-pri" href={tel}>Call now</a><a class="btn btn-out" href="/schedule-a-tour/">Book a tour</a></div>
+    <div class="mbar"><a class="btn btn-pri" href={tel}>Call now</a>{SHOW_TOURS ? <a class="btn btn-out" href="/schedule-a-tour/">Book a tour</a> : <a class="btn btn-out" href="/contact-us/">Contact us</a>}</div>
   </body>
 </html>

@@ -6,7 +6,7 @@ export const site = {
   formerName: 'Westlake Nursing and Rehab Center',
   phone: '(954) 927-0508',
   phoneHref: '+19549270508',
-  fax: '',
+  fax: 'bluewaterefax@linkshealth.com',
   email: '',
   street: '440 Phippen Waiters Road',
   city: 'Dania Beach',
@@ -23,7 +23,7 @@ export const home = {
   heroTitle: 'Skilled nursing and short-term rehab in Dania Beach',
   heroText:
     'An 88-bed skilled nursing facility with registered nurses on duty 24 hours a day and an in-house therapy team focused on getting you back to your highest level of independence.',
-  heroProof: ['Medicare & Medicaid accepted', 'Registered nurses 24/7', 'In-house PT, OT & speech therapy'],
+  heroProof: ['4-star CMS Quality Measures rating', 'Medicare & Medicaid accepted', 'Registered nurses 24/7', 'In-house PT, OT & speech therapy'],
   heroVideos: ['/seed/hero-1.mp4', '/seed/hero-2.mp4', '/seed/hero-3.mp4'],
   heroPoster: '/seed/hero.jpg',
   payers: ['Medicare', 'Medicaid'],
@@ -39,10 +39,10 @@ export const home = {
   chapterTitle: 'New name. New ownership. The same commitment to every resident.',
   chapterText: [
     'Bluewater Post-Acute is under new ownership with a new leadership team, focused on doing the everyday things well: consistent nursing, attentive therapy and clear communication with families.',
-    "We'd love for you to see the difference for yourself. Stop by for a tour, meet our team and ask us anything.",
+    "We'd love for you to see the difference for yourself. Give us a call, meet our team and ask us anything.",
   ],
   steps: [
-    { title: 'Call or schedule a tour', body: 'Talk with our team or come see the facility in person.' },
+    { title: 'Give us a call', body: 'Talk with our team about care for you or a loved one.' },
     { title: 'We handle the transition', body: 'Our social services team takes care of the administrative details and supports your family through the move.' },
     { title: 'A plan built for you', body: 'Nursing and therapy build an individualized care plan around your goals.' },
     { title: 'Family stays involved', body: 'Families are welcome in therapy sessions and receive caregiver education and training.' },
@@ -59,6 +59,7 @@ export const home = {
     'Religious meetings', 'Current events', 'Resident & family councils', 'Volunteer program', 'Community celebrations',
   ],
   stats: [
+    { value: '4★', label: 'CMS Quality Measures rating' },
     { value: '88', label: 'Beds' },
     { value: '24/7', label: 'Registered nurses on duty' },
     { value: '3', label: 'In-house therapy disciplines' },
@@ -237,9 +238,9 @@ export const services: Service[] = [
 ];
 
 export const leaders = [
-  { name: '[Name]', role: 'Administrator', bio: '[One line on their background and what they focus on]', photo: '' },
-  { name: '[Name]', role: 'Director of Nursing', bio: '[One line on their background and what they focus on]', photo: '' },
-  { name: '[Name]', role: 'Medical Director', bio: '[One line on their background and what they focus on]', photo: '' },
+  { name: 'Joel Connors', role: 'Administrator', bio: 'Joel leads the day-to-day life of the facility, making sure residents and families feel heard, supported and at home.', photo: '/team/joel.jpg' },
+  { name: 'Guylene Joseph', role: 'Director of Nursing', bio: 'Guylene guides our nursing team with a focus on consistent, compassionate care around the clock.', photo: '/team/guylene.jpg' },
+  { name: 'Hessam Zand, MD', role: 'Medical Director', bio: 'Dr. Zand oversees medical care at Bluewater, working closely with nurses and therapists on each resident’s recovery plan.', photo: '/team/hessam.jpg' },
 ];
 
 export const legalPages = [

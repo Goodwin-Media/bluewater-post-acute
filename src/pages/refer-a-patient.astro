@@ -14,7 +14,7 @@ const tel = telHref(site.phone)
       <div style="flex:1 1 380px;min-width:0" class="stack">
         <h2 style="font-size:28px">Admissions</h2>
         <a href={tel} style="font-weight:600;font-size:24px;color:var(--ink);text-decoration:none">{site.phone}</a>
-        {site.fax && <p class="lead">Referral fax: <b>{site.fax}</b></p>}
+        {site.fax && <p class="lead">Referral eFax: <b>{site.fax.includes('@') ? <a href={`mailto:${site.fax}`} style="color:inherit">{site.fax}</a> : site.fax}</b></p>}
         <ul class="check-list">
           {['Medicare and Medicaid accepted', 'Registered nurses on duty 24/7', 'In-house physical, occupational and speech therapy', 'Wound care, IV therapy, enteral feeding and dementia care', 'Onsite Medical Director and Director of Nursing'].map((t) => <li><Icon name="check" color="#1f7a74" />{t}</li>)}
         </ul>

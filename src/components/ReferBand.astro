@@ -10,7 +10,7 @@ const {site, tel} = Astro.props
     </div>
     <div class="refer-box" style="flex:0 1 380px;min-width:0">
       <div><span style="color:#becdd5">Admissions</span><a href={tel} style="color:#fff;font-weight:600;text-decoration:none">{site.phone}</a></div>
-      {site.fax && <div><span style="color:#becdd5">Referral fax</span><b>{site.fax}</b></div>}
+      {site.fax && <div><span style="color:#becdd5">Referral eFax</span><b>{site.fax.includes('@') ? <a href={`mailto:${site.fax}`} style="color:inherit">{site.fax}</a> : site.fax}</b></div>}
       <a class="btn btn-white" href="/refer-a-patient/">Send a referral</a>
     </div>
   </div>

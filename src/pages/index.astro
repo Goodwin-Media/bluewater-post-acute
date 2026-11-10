@@ -1,4 +1,5 @@
 ---
+import {SHOW_TOURS} from '../lib/flags'
 import Base from '../layouts/Base.astro'
 import Icon from '../components/Icon.astro'
 import Faq from '../components/Faq.astro'
@@ -24,7 +25,7 @@ const homeServices = services.filter((s) => s.showOnHome)
         <p>{h.heroText}</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px">
           <a class="btn btn-pri" href={tel}><Icon name="phone" size={18} />Call {site.phone}</a>
-          <a class="btn btn-ghost" href="/schedule-a-tour/">Schedule a Tour</a>
+          {SHOW_TOURS ? <a class="btn btn-ghost" href="/schedule-a-tour/">Schedule a Tour</a> : <a class="btn btn-ghost" href="/contact-us/">Contact Us</a>}
         </div>
         <ul class="proof">{h.heroProof.map((p: string) => <li><Icon name="check" size={18} color="#5fc2b5" />{p}</li>)}</ul>
       </div>
@@ -72,7 +73,7 @@ const homeServices = services.filter((s) => s.showOnHome)
         <span class="eye">A new chapter</span>
         <h2 style="font-size:36px;line-height:1.18">{h.chapterTitle}</h2>
         {h.chapterText.map((t: string) => <p class="lead">{t}</p>)}
-        <div><a class="btn btn-out" href="/schedule-a-tour/">Meet the team on a tour</a></div>
+        {SHOW_TOURS && <div><a class="btn btn-out" href="/schedule-a-tour/">Meet the team on a tour</a></div>}
         <p style="font-size:13px;color:#5f6f7e">Formerly {site.formerName}.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px">
@@ -113,7 +114,7 @@ const homeServices = services.filter((s) => s.showOnHome)
       <div class="grid gal" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px">
         {h.gallery.map((g: any) => <figure><img src={g.image} alt={g.caption} loading="lazy" /><figcaption>{g.caption}</figcaption></figure>)}
       </div>
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px"><a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a><a class="btn btn-out" href={tel}>Call {site.phone}</a></div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px">{SHOW_TOURS && <a class="btn btn-pri" href="/schedule-a-tour/">Schedule a Tour</a>}<a class={SHOW_TOURS ? "btn btn-out" : "btn btn-pri"} href={tel}>Call {site.phone}</a></div>
     </div>
   </section>
 
@@ -158,13 +159,20 @@ const homeServices = services.filter((s) => s.showOnHome)
   <section class="sec" style="background:var(--sand)" id="tour">
     <div class="w" style="display:flex;flex-wrap:wrap;gap:56px">
       <div style="flex:1 1 380px;min-width:0" class="stack">
-        <h2 class="h2">Come see Bluewater for yourself</h2>
-        <p class="lead">Schedule a tour or ask us anything about care for you or a loved one. Our doors are always open to you and your family.</p>
+        <h2 class="h2">{SHOW_TOURS ? 'Come see Bluewater for yourself' : 'Talk with our team'}</h2>
+        <p class="lead">{SHOW_TOURS ? 'Schedule a tour or ask us anything about care for you or a loved one. Our doors are always open to you and your family.' : 'Ask us anything about care for you or a loved one. We\'re here to help you and your family.'}</p>
         <div><div class="muted" style="font-size:13px">Phone</div><a href={tel} style="font-weight:600;font-size:20px;color:var(--ink);text-decoration:none">{site.phone}</a></div>
         <div><div class="muted" style="font-size:13px">Address</div><a href={site.mapsUrl} style="font-weight:600;color:var(--ink);text-decoration:none">{site.street}<br />{site.city}, {site.state} {site.zip}</a></div>
         <iframe class="map" title="Map to Bluewater Post-Acute" loading="lazy" src={`https://www.google.com/maps?q=${encodeURIComponent(`${site.street}, ${site.city}, ${site.state} ${site.zip}`)}&output=embed`}></iframe>
       </div>
-      <div style="flex:1 1 440px;min-width:0"><TourForm /></div>
+      <div style="flex:1 1 440px;min-width:0">{SHOW_TOURS ? <TourForm /> : (
+        <div class="card form">
+          <h3 style="font-size:24px">Have a question?</h3>
+          <p class="muted" style="font-size:15px">The fastest way to reach us is by phone. You can also send a message and we'll get back to you.</p>
+          <a class="btn btn-pri" href={tel}>Call {site.phone}</a>
+          <a class="btn btn-out" href="/contact-us/">Send us a message</a>
+        </div>
+      )}</div>
     </div>
   </section>
 
